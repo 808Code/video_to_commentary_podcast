@@ -47,9 +47,13 @@ def get_conversation_unstructured(client, summary, name1, name2):
 
     :::::::::conversation::::::::::
 
-    .............here give me the conversation... where its dialogue follwed after name.    
+    .............here give me the conversation... where its dialogue followed after name.    
 
     :::::::::::::::::::::::::::::::
+
+    Note the conversation must be between these two people only.
+
+    Both {name1} and {name2} should take turns in the conversation.
     '''
    
     return complete_chat(client, PROMPT)
