@@ -79,7 +79,3 @@ def video_to_commentary_podcast(
     inputs = [ffmpeg.input(file_name) for file_name in [dialogue_object['job'].result().path for dialogue_object in conversation_structured['dialogues']]]
     ffmpeg.concat(*inputs, v=0, a=1).output('output.wav').run()
     return sieve.Audio(path="output.wav")
-
-
-
-print(video_to_commentary_podcast("https://www.youtube.com/watch?v=Pg72m3CjuK4", "Adam", "Joanna"))
