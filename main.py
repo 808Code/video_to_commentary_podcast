@@ -118,7 +118,6 @@ def video_to_commentary_podcast(
             if(male_name == dialogue_object['name']):
                 voice = male_voice
             dialogue_object['job'] = tts.push(voice, dialogue_object['dialogue'], reference_audio, emotion, pace, stability, style, word_timestamps)
-            
 
     inputs = [ffmpeg.input(file_name) for file_name in [dialogue_object['job'].result().path for dialogue_object in conversation_structured['dialogues']]]
     ffmpeg.concat(*inputs, v=0, a=1).output('output.wav').run()
