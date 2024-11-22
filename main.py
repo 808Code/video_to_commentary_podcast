@@ -1,6 +1,33 @@
+from openai import AzureOpenAI
 import sieve
 from azure_llm_calls import get_conversation_structured, get_conversation_unstructured
 import ffmpeg
+import os
+
+def get_azure_openai_api_key():
+    AZURE_OPENAI_API_KEY = os.getenv("AZURE_OPENAI_API_KEY")
+    if AZURE_OPENAI_API_KEY is None or AZURE_OPENAI_API_KEY == "":
+        raise Exception("AZURE_OPENAI_API_KEY environment variable not set")
+    return AZURE_OPENAI_API_KEY
+
+def get_azure_api_version():
+    AZURE_API_VERSION = os.getenv("AZURE_API_VERSION")
+    if AZURE_API_VERSION is None or AZURE_API_VERSION == "":
+        raise Exception("AZURE_API_VERSION environment variable not set")
+    return AZURE_API_VERSION
+
+def get_azure_open_api_url():
+    AZURE_OPEN_API_URL = os.getenv("AZURE_OPEN_API_URL")
+    if AZURE_OPEN_API_URL is None or AZURE_OPEN_API_URL == "":
+        raise Exception("AZURE_OPEN_API_URL environment variable not set")
+    return AZURE_OPEN_API_URL
+
+def get_azure_deployment_name():
+    AZURE_DEPLOYMENT_NAME = os.getenv("AZURE_DEPLOYMENT_NAME")
+    if AZURE_DEPLOYMENT_NAME is None or AZURE_DEPLOYMENT_NAME == "":
+        raise Exception("AZURE_DEPLOYMENT_NAME environment variable not set")
+    return AZURE_DEPLOYMENT_NAME
+
 
 @sieve.function(
     name="video_to_commentary_podcast",
@@ -8,11 +35,11 @@ import ffmpeg
     system_packages=["ffmpeg"],
     python_version="3.10.12",
     environment_variables=[
-        sieve.Env(name="AZURE_OPENAI_API_KEY", description="AZURE_OPENAI_API_KEY"),
-        sieve.Env(name="AZURE_API_VERSION", description="AZURE_API_VERSION"),
-        sieve.Env(name="AZURE_OPEN_API_URL", description="AZURE_OPEN_API_URL"),
-        sieve.Env(name="AZURE_DEPLOYMENT_NAME", description="AZURE_DEPLOYMENT_NAME"),
-    ]
+        sieve.Env(name="AZURE_OPENAI_API_KEY", description="AZURE_OPENAI_API_KEY of your AZURE account."),
+        sieve.Env(name="AZURE_API_VERSION", description="AZURE_API_VERSION of your AZURE account."),
+        sieve.Env(name="AZURE_OPEN_API_URL", description="AZURE_OPEN_API_URL of your AZURE account."),
+        sieve.Env(name="AZURE_DEPLOYMENT_NAME", description="AZURE_DEPLOYMENT_NAME of your AZURE account."),
+    ],
 )
 def video_to_commentary_podcast(
           url :str, 
@@ -31,7 +58,13 @@ def video_to_commentary_podcast(
     :param max_summary_length: Maximum length of the video summary.
     :return: Generated audio file of the commentary podcast.
     """
-    
+    client = AzureOpenAI(
+    api_key= get_azure_openai_api_key(),
+    api_version = get_azure_api_version(),
+    azure_endpoint= get_azure_open_api_url(),
+    azure_deployment = get_azure_deployment_name()
+    )
+
     downloader = sieve.function.get("sieve/youtube_to_mp4")
     video_link = downloader.run(url)
 
@@ -58,9 +91,9 @@ def video_to_commentary_podcast(
 
 
 
-    conversation_unstructured = get_conversation_unstructured(summary, male_name, female_name)
+    conversation_unstructured = get_conversation_unstructured(client, summary, male_name, female_name)
     print("A conversation has been generated needing JSON parsing.")
-    conversation_structured = get_conversation_structured(conversation_unstructured)
+    conversation_structured = get_conversation_structured(client, conversation_unstructured)
     print("A conversation generated has been parsed to json.")
 
 
