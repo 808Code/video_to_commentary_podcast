@@ -2,7 +2,18 @@ import sieve
 from azure_llm_calls import get_conversation_structured, get_conversation_unstructured
 import ffmpeg
 
-
+@sieve.function(
+    name="video_to_commentary_podcast",
+    python_packages=["openai", "ffmpeg-python"],
+    system_packages=["ffmpeg"],
+    python_version="3.10.12",
+    environment_variables=[
+        sieve.Env(name="AZURE_OPENAI_API_KEY", description="AZURE_OPENAI_API_KEY"),
+        sieve.Env(name="AZURE_API_VERSION", description="AZURE_API_VERSION"),
+        sieve.Env(name="AZURE_OPEN_API_URL", description="AZURE_OPEN_API_URL"),
+        sieve.Env(name="AZURE_DEPLOYMENT_NAME", description="AZURE_DEPLOYMENT_NAME"),
+    ]
+)
 def video_to_commentary_podcast(
           url :str, 
           male_name : str, 
@@ -79,3 +90,7 @@ def video_to_commentary_podcast(
     inputs = [ffmpeg.input(file_name) for file_name in [dialogue_object['job'].result().path for dialogue_object in conversation_structured['dialogues']]]
     ffmpeg.concat(*inputs, v=0, a=1).output('output.wav').run()
     return sieve.Audio(path="output.wav")
+
+if __name__=="__main__":
+    sieve_audio_object = video_to_commentary_podcast("https://www.youtube.com/watch?v=EW9TUqOgjmQ", "Alpha", "Omega", 10)
+    print(sieve_audio_object)
