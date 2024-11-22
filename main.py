@@ -29,6 +29,15 @@ def get_azure_deployment_name():
     return AZURE_DEPLOYMENT_NAME
 
 
+metadata = sieve.Metadata(
+    title="Youtube video to conversational podcast",
+    description="Given a youtube video url generate a conversational podcast.",
+    tags=["Video", "Audio"],
+    image=sieve.Image(
+        path="logo.jpg"
+    ),
+    readme=open("README.md", "r").read(),
+)
 @sieve.function(
     name="video_to_commentary_podcast",
     python_packages=["openai", "ffmpeg-python"],
@@ -40,6 +49,7 @@ def get_azure_deployment_name():
         sieve.Env(name="AZURE_OPEN_API_URL", description="AZURE_OPEN_API_URL of your AZURE account."),
         sieve.Env(name="AZURE_DEPLOYMENT_NAME", description="AZURE_DEPLOYMENT_NAME of your AZURE account."),
     ],
+    metadata=metadata
 )
 def video_to_commentary_podcast(
           url :str, 
@@ -115,7 +125,7 @@ def video_to_commentary_podcast(
    
     for dialogue_object in conversation_structured['dialogues']:        
             voice = female_voice
-            if(male_name == dialogue_object['name']):
+            if(male_name.lower() == dialogue_object['name'].lower()):
                 voice = male_voice
             dialogue_object['job'] = tts.push(voice, dialogue_object['dialogue'], reference_audio, emotion, pace, stability, style, word_timestamps)
 
