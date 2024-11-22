@@ -53,8 +53,8 @@ metadata = sieve.Metadata(
 )
 def video_to_commentary_podcast(
           url :str, 
-          male_name : str, 
-          female_name: str, 
+          male_name : str = 'sam', 
+          female_name: str = 'jane', 
           max_summary_length: int = 10
     ) -> sieve.File:
 
@@ -104,8 +104,8 @@ def video_to_commentary_podcast(
     conversation_unstructured = get_conversation_unstructured(client, summary, male_name, female_name)
     print("A conversation has been generated needing JSON parsing.")
     conversation_structured = get_conversation_structured(client, conversation_unstructured)
-    print("A conversation generated has been parsed to json.")
-
+    print(f"A conversation generated has been parsed to json that is {len(conversation_structured['dialogues'])}.")
+    print(conversation_structured['dialogues'])
 
     #TODO : ADD Voice selection for each person.
     male_voice = "cartesia-friendly-reading-man"
@@ -130,7 +130,16 @@ def video_to_commentary_podcast(
             dialogue_object['job'] = tts.push(voice, dialogue_object['dialogue'], reference_audio, emotion, pace, stability, style, word_timestamps)
 
     inputs = [ffmpeg.input(file_name) for file_name in [dialogue_object['job'].result().path for dialogue_object in conversation_structured['dialogues']]]
-    ffmpeg.concat(*inputs, v=0, a=1).output('output.wav').run()
+    
+    try:
+        print(f"Inputs: {inputs}")
+        ffmpeg.concat(*inputs, v=0, a=1).output('output.wav', acodec='pcm_s16le', format='wav', **{'y': None}).run(quiet=False, capture_stdout=True, capture_stderr=True)
+    except ffmpeg.Error as e:
+        if e.stderr:
+            print("FFmpeg Error:", e.stderr.decode('utf-8'))
+        else:
+            print("FFmpeg Error: No stderr output available")
+        raise
     return sieve.Audio(path="output.wav")
 
 if __name__=="__main__":
