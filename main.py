@@ -105,8 +105,7 @@ def video_to_commentary_podcast(
     print("A conversation has been generated needing JSON parsing.")
     conversation_structured = get_conversation_structured(client, conversation_unstructured)
     print(f"A conversation generated has been parsed to json that is {len(conversation_structured['dialogues'])}.")
-    print(conversation_structured['dialogues'])
-
+    
     #TODO : ADD Voice selection for each person.
     male_voice = "cartesia-friendly-reading-man"
     female_voice = "cartesia-australian-woman"
@@ -132,7 +131,6 @@ def video_to_commentary_podcast(
     inputs = [ffmpeg.input(file_name) for file_name in [dialogue_object['job'].result().path for dialogue_object in conversation_structured['dialogues']]]
     
     try:
-        print(f"Inputs: {inputs}")
         ffmpeg.concat(*inputs, v=0, a=1).output('output.wav', acodec='pcm_s16le', format='wav', **{'y': None}).run(quiet=False, capture_stdout=True, capture_stderr=True)
     except ffmpeg.Error as e:
         if e.stderr:
