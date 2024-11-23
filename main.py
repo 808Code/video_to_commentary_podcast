@@ -1,3 +1,4 @@
+from typing import Literal
 from openai import AzureOpenAI
 import sieve
 from azure_llm_calls import AzureCall
@@ -28,6 +29,7 @@ def get_azure_deployment_name():
         raise Exception("AZURE_DEPLOYMENT_NAME environment variable not set")
     return AZURE_DEPLOYMENT_NAME
 
+VoiceOptions =  Literal['elevenlabs-voice-cloning', 'cartesia-voice-cloning', 'cartesia-japanese-man-book', 'cartesia-german-conversational-woman', 'cartesia-reflective-woman', 'cartesia-ted', 'cartesia-spanish-narrator-lady', 'cartesia-friendly-reading-man', 'cartesia-sweet-lady', 'cartesia-nonfiction-man', 'cartesia-commercial-lady', 'cartesia-chinese-commercial-man', 'cartesia-british-customer-support-lady', 'cartesia-commercial-man', 'cartesia-teacher-lady', 'cartesia-friendly-sidekick', 'cartesia-tutorial-man', 'cartesia-asmr-lady', 'cartesia-chinese-woman-narrator', 'cartesia-midwestern-woman', 'cartesia-sportsman', 'cartesia-storyteller-lady', 'cartesia-french-conversational-lady', 'cartesia-french-narrator-lady', 'cartesia-french-narrator-man', 'cartesia-stern-french-man', 'cartesia-german-storyteller-man', 'cartesia-friendly-german-man', 'cartesia-german-reporter-woman', 'cartesia-german-conversation-man', 'cartesia-friendly-brazilian-man', 'cartesia-german-woman', 'cartesia-southern-belle', 'cartesia-california-girl', 'cartesia-reading-man', 'cartesia-british-reading-lady', 'cartesia-british-narration-lady', 'cartesia-wise-man', 'cartesia-announcer-man', 'cartesia-doctor-mischief', 'cartesia-anime-girl', 'cartesia-wise-guide-man', 'cartesia-the-merchant', 'cartesia-madame-mischief', 'cartesia-calm-french-woman', 'cartesia-new-york-man', 'cartesia-new-york-woman', 'cartesia-female-nurse', 'cartesia-laidback-woman', 'cartesia-alabama-male', 'cartesia-midwestern-man', 'cartesia-kentucky-man', 'cartesia-japanese-children-book', 'cartesia-kentucky-woman', 'cartesia-chinese-commercial-woman', 'cartesia-japanese-male-conversational', 'cartesia-japanese-woman-conversational', 'cartesia-brazilian-young-man', 'cartesia-spanish-narrator-man', 'cartesia-helpful-french-lady', 'cartesia-chinese-female-conversational', 'cartesia-chinese-call-center-man', 'cartesia-german-reporter-man', 'cartesia-friendly-french-man', 'cartesia-pleasant-brazilian-lady', 'cartesia-salesman', 'cartesia-customer-support-lady', 'cartesia-australian-male', 'cartesia-australian-woman', 'cartesia-indian-customer-support-lady', 'cartesia-indian-lady', 'cartesia-confident-british-man', 'cartesia-middle-eastern-woman', 'cartesia-yogaman', 'cartesia-movieman', 'cartesia-wizardman', 'cartesia-southern-man', 'cartesia-pilot-over-intercom', 'cartesia-reading-lady', 'cartesia-classy-british-man', 'cartesia-newsman', 'cartesia-child', 'cartesia-maria', 'cartesia-barbershop-man', 'cartesia-meditation-lady', 'cartesia-newslady', 'cartesia-1920’s-radioman', 'cartesia-british-lady', 'cartesia-hannah', 'cartesia-wise-lady', 'cartesia-calm-lady', 'cartesia-indian-man', 'cartesia-princess', 'elevenlabs-rachel', 'elevenlabs-alberto', 'elevenlabs-gabriela', 'elevenlabs-darine', 'elevenlabs-maxime', 'openai-alloy', 'openai-echo', 'openai-onyx', 'openai-nova', 'openai-shimmer', 'openai-alloy-hd', 'openai-echo-hd', 'openai-onyx-hd', 'openai-nova-hd', 'openai-shimmer-hd']         
 
 metadata = sieve.Metadata(
     title="Youtube video to conversational podcast",
@@ -53,8 +55,10 @@ metadata = sieve.Metadata(
 )
 def video_to_commentary_podcast(
           url :str, 
-          male_name : str = 'sam', 
-          female_name: str = 'jane', 
+          name1 : str = 'sam',          
+          voice1: VoiceOptions = 'cartesia-friendly-reading-man', 
+          name2: str = 'jane', 
+          voice2: VoiceOptions = 'cartesia-australian-woman',
           max_summary_length: int = 10,
           azure_model_name: str = 'gpt-4o'
     ) -> sieve.File:
@@ -64,8 +68,10 @@ def video_to_commentary_podcast(
     and synthesizing audio for each dialogue.
 
     :param url: YouTube video URL.
-    :param male_name: Name of the male speaker in the conversation.
-    :param female_name: Name of the female speaker in the conversation.
+    :param name1: Name of speaker one in the conversation.
+    :param voice1: Voice of speaker one in the conversation.
+    :param name2: Name of speaker two in the conversation.
+    :param voice2: Voice of speaker two in the conversation.
     :param max_summary_length: Maximum length of the video summary.
     :return: Generated audio file of the commentary podcast.
     """
@@ -105,15 +111,11 @@ def video_to_commentary_podcast(
 
 
 
-    conversation_unstructured = azure_call.get_conversation_unstructured(summary, male_name, female_name)
+    conversation_unstructured = azure_call.get_conversation_unstructured(summary, name1, name2)
     print("A conversation has been generated needing JSON parsing.")
     conversation_structured = azure_call.get_conversation_structured(conversation_unstructured)
     print(f"A conversation generated has been parsed to json that is of length {len(conversation_structured['dialogues'])}.")
     
-    #TODO : ADD Voice selection for each person.
-    male_voice = "cartesia-friendly-reading-man"
-    female_voice = "cartesia-australian-woman"
-
     #TODO : Referece Audio Not needed here.
     tts_settings = {
         'reference_audio': sieve.File(url="https://storage.googleapis.com/sieve-prod-us-central1-public-file-upload-bucket/482b91af-e737-48ea-b76d-4bb22d77fb56/caa0664b-f530-4406-858a-99837eb4b354-input-reference_audio.wav"),
@@ -128,9 +130,9 @@ def video_to_commentary_podcast(
     tts = sieve.function.get("sieve/tts")
    
     for dialogue_object in conversation_structured['dialogues']:        
-            voice = female_voice
-            if(male_name.lower() == dialogue_object['name'].lower()):
-                voice = male_voice
+            voice = voice2
+            if(name1.lower() == dialogue_object['name'].lower()):
+                voice = voice1
             dialogue_object['job'] = tts.push(voice, dialogue_object['dialogue'], **tts_settings)
 
     inputs = [ffmpeg.input(file_name) for file_name in [dialogue_object['job'].result().path for dialogue_object in conversation_structured['dialogues']]]
@@ -146,5 +148,5 @@ def video_to_commentary_podcast(
     return sieve.Audio(path="output.wav")
 
 if __name__=="__main__":
-    sieve_audio_object = video_to_commentary_podcast("https://www.youtube.com/watch?v=EW9TUqOgjmQ", "Alpha", "Omega", 10, 'gpt-4o')
+    sieve_audio_object = video_to_commentary_podcast("https://www.youtube.com/watch?v=EW9TUqOgjmQ", "Alpha", "cartesia-german-conversational-woman", "Omega", "cartesia-commercial-man", 10, 'gpt-4o')
     print(sieve_audio_object)

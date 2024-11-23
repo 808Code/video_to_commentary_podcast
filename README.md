@@ -14,10 +14,17 @@ Video to commentary podcast app allows a user to create an AI conversation about
 - `url`: 
   The URL of the YouTube video to be processed.
 
-- `male_name`: The name of the male speaker in the conversation.
+- `name1`:
+  Name of speaker one in the conversation.
 
-- `female_name`:
-  The name of the female speaker in the conversation.
+- `voice1`:
+   Voice of speaker one in the conversation.
+
+- `name2`:
+  Name of speaker one in the conversation.
+
+- `voice2`:
+   Voice of speaker two in the conversation.
 
 - `max_summary_length`: 
   The maximum length of the summary for the video that gets talked about.
