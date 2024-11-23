@@ -84,7 +84,7 @@ def video_to_commentary_podcast(
     )
 
     azure_call = AzureCall(client, azure_model_name)
-    print("Seleceted Model", azure_model_name)
+    print("Selected Model", azure_model_name)
     
     downloader = sieve.function.get("sieve/youtube_to_mp4")
     video_link = downloader.run(url)
