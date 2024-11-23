@@ -116,7 +116,7 @@ def video_to_commentary_podcast(
     conversation_structured = azure_call.get_conversation_structured(conversation_unstructured)
     print(f"A conversation generated has been parsed to json that is of length {len(conversation_structured['dialogues'])}.")
     
-    #TODO : Referece Audio Not needed here.
+    
     tts_settings = {
         'reference_audio': sieve.File(url="https://storage.googleapis.com/sieve-prod-us-central1-public-file-upload-bucket/482b91af-e737-48ea-b76d-4bb22d77fb56/caa0664b-f530-4406-858a-99837eb4b354-input-reference_audio.wav"),
         'emotion': "normal",

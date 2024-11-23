@@ -55,7 +55,13 @@ class AzureCall:
 
         Both {name1} and {name2} should take turns in the conversation.
         '''
-        return self.complete_chat(PROMPT)
+        try :
+            response = self.complete_chat(PROMPT)
+            return response
+        except Exception as e:
+            print("Error during generation of conversation from summary.")
+            raise
+
 
     def get_conversation_structured(self, conversation_unstructured):
         prompt = (f'''Structure the below context:
@@ -106,5 +112,10 @@ class AzureCall:
                 }
             }
         ]
-        response = self.make_function_call(prompt, extract_all_structured_conversation, function_name)
-        return response
+        try:
+            response = self.make_function_call(prompt, extract_all_structured_conversation, function_name)
+            return response
+        except Exception as e:
+            print(f"Error fetching {function_name} function call.", str(e))
+            raise
+        
