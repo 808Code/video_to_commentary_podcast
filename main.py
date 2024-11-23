@@ -82,9 +82,10 @@ def video_to_commentary_podcast(
     azure_endpoint = get_azure_openai_endpoint(),
     azure_deployment = get_azure_deployment_name()
     )
-    
-    azure_call = AzureCall(client, azure_model_name)
 
+    azure_call = AzureCall(client, azure_model_name)
+    print("Seleceted Model", azure_model_name)
+    
     downloader = sieve.function.get("sieve/youtube_to_mp4")
     video_link = downloader.run(url)
 
