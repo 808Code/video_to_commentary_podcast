@@ -29,7 +29,8 @@ def get_azure_deployment_name():
         raise Exception("AZURE_DEPLOYMENT_NAME environment variable not set")
     return AZURE_DEPLOYMENT_NAME
 
-VoiceOptions =  Literal['elevenlabs-voice-cloning', 'cartesia-voice-cloning', 'cartesia-japanese-man-book', 'cartesia-german-conversational-woman', 'cartesia-reflective-woman', 'cartesia-ted', 'cartesia-spanish-narrator-lady', 'cartesia-friendly-reading-man', 'cartesia-sweet-lady', 'cartesia-nonfiction-man', 'cartesia-commercial-lady', 'cartesia-chinese-commercial-man', 'cartesia-british-customer-support-lady', 'cartesia-commercial-man', 'cartesia-teacher-lady', 'cartesia-friendly-sidekick', 'cartesia-tutorial-man', 'cartesia-asmr-lady', 'cartesia-chinese-woman-narrator', 'cartesia-midwestern-woman', 'cartesia-sportsman', 'cartesia-storyteller-lady', 'cartesia-french-conversational-lady', 'cartesia-french-narrator-lady', 'cartesia-french-narrator-man', 'cartesia-stern-french-man', 'cartesia-german-storyteller-man', 'cartesia-friendly-german-man', 'cartesia-german-reporter-woman', 'cartesia-german-conversation-man', 'cartesia-friendly-brazilian-man', 'cartesia-german-woman', 'cartesia-southern-belle', 'cartesia-california-girl', 'cartesia-reading-man', 'cartesia-british-reading-lady', 'cartesia-british-narration-lady', 'cartesia-wise-man', 'cartesia-announcer-man', 'cartesia-doctor-mischief', 'cartesia-anime-girl', 'cartesia-wise-guide-man', 'cartesia-the-merchant', 'cartesia-madame-mischief', 'cartesia-calm-french-woman', 'cartesia-new-york-man', 'cartesia-new-york-woman', 'cartesia-female-nurse', 'cartesia-laidback-woman', 'cartesia-alabama-male', 'cartesia-midwestern-man', 'cartesia-kentucky-man', 'cartesia-japanese-children-book', 'cartesia-kentucky-woman', 'cartesia-chinese-commercial-woman', 'cartesia-japanese-male-conversational', 'cartesia-japanese-woman-conversational', 'cartesia-brazilian-young-man', 'cartesia-spanish-narrator-man', 'cartesia-helpful-french-lady', 'cartesia-chinese-female-conversational', 'cartesia-chinese-call-center-man', 'cartesia-german-reporter-man', 'cartesia-friendly-french-man', 'cartesia-pleasant-brazilian-lady', 'cartesia-salesman', 'cartesia-customer-support-lady', 'cartesia-australian-male', 'cartesia-australian-woman', 'cartesia-indian-customer-support-lady', 'cartesia-indian-lady', 'cartesia-confident-british-man', 'cartesia-middle-eastern-woman', 'cartesia-yogaman', 'cartesia-movieman', 'cartesia-wizardman', 'cartesia-southern-man', 'cartesia-pilot-over-intercom', 'cartesia-reading-lady', 'cartesia-classy-british-man', 'cartesia-newsman', 'cartesia-child', 'cartesia-maria', 'cartesia-barbershop-man', 'cartesia-meditation-lady', 'cartesia-newslady', 'cartesia-1920’s-radioman', 'cartesia-british-lady', 'cartesia-hannah', 'cartesia-wise-lady', 'cartesia-calm-lady', 'cartesia-indian-man', 'cartesia-princess', 'elevenlabs-rachel', 'elevenlabs-alberto', 'elevenlabs-gabriela', 'elevenlabs-darine', 'elevenlabs-maxime', 'openai-alloy', 'openai-echo', 'openai-onyx', 'openai-nova', 'openai-shimmer', 'openai-alloy-hd', 'openai-echo-hd', 'openai-onyx-hd', 'openai-nova-hd', 'openai-shimmer-hd']         
+VoiceOptions =  Literal['cartesia-japanese-man-book', 'cartesia-german-conversational-woman', 'cartesia-reflective-woman', 'cartesia-ted', 'cartesia-spanish-narrator-lady', 'cartesia-friendly-reading-man', 'cartesia-sweet-lady', 'cartesia-nonfiction-man', 'cartesia-commercial-lady', 'cartesia-chinese-commercial-man', 'cartesia-british-customer-support-lady', 'cartesia-commercial-man', 'cartesia-teacher-lady', 'cartesia-friendly-sidekick', 'cartesia-tutorial-man', 'cartesia-asmr-lady', 'cartesia-chinese-woman-narrator', 'cartesia-midwestern-woman', 'cartesia-sportsman', 'cartesia-storyteller-lady', 'cartesia-french-conversational-lady', 'cartesia-french-narrator-lady', 'cartesia-french-narrator-man', 'cartesia-stern-french-man', 'cartesia-german-storyteller-man', 'cartesia-friendly-german-man', 'cartesia-german-reporter-woman', 'cartesia-german-conversation-man', 'cartesia-friendly-brazilian-man', 'cartesia-german-woman', 'cartesia-southern-belle', 'cartesia-california-girl', 'cartesia-reading-man', 'cartesia-british-reading-lady', 'cartesia-british-narration-lady', 'cartesia-wise-man', 'cartesia-announcer-man', 'cartesia-doctor-mischief', 'cartesia-anime-girl', 'cartesia-wise-guide-man', 'cartesia-the-merchant', 'cartesia-madame-mischief', 'cartesia-calm-french-woman', 'cartesia-new-york-man', 'cartesia-new-york-woman', 'cartesia-female-nurse', 'cartesia-laidback-woman', 'cartesia-alabama-male', 'cartesia-midwestern-man', 'cartesia-kentucky-man', 'cartesia-japanese-children-book', 'cartesia-kentucky-woman', 'cartesia-chinese-commercial-woman', 'cartesia-japanese-male-conversational', 'cartesia-japanese-woman-conversational', 'cartesia-brazilian-young-man', 'cartesia-spanish-narrator-man', 'cartesia-helpful-french-lady', 'cartesia-chinese-female-conversational', 'cartesia-chinese-call-center-man', 'cartesia-german-reporter-man', 'cartesia-friendly-french-man', 'cartesia-pleasant-brazilian-lady', 'cartesia-salesman', 'cartesia-customer-support-lady', 'cartesia-australian-male', 'cartesia-australian-woman', 'cartesia-indian-customer-support-lady', 'cartesia-indian-lady', 'cartesia-confident-british-man', 'cartesia-middle-eastern-woman', 'cartesia-yogaman', 'cartesia-movieman', 'cartesia-wizardman', 'cartesia-southern-man', 'cartesia-pilot-over-intercom', 'cartesia-reading-lady', 'cartesia-classy-british-man', 'cartesia-newsman', 'cartesia-child', 'cartesia-maria', 'cartesia-barbershop-man', 'cartesia-meditation-lady', 'cartesia-newslady', 'cartesia-1920’s-radioman', 'cartesia-british-lady', 'cartesia-hannah', 'cartesia-wise-lady', 'cartesia-calm-lady', 'cartesia-indian-man', 'cartesia-princess', 'elevenlabs-rachel', 'elevenlabs-alberto', 'elevenlabs-gabriela', 'elevenlabs-darine', 'elevenlabs-maxime', 'openai-alloy', 'openai-echo', 'openai-onyx', 'openai-nova', 'openai-shimmer', 'openai-alloy-hd', 'openai-echo-hd', 'openai-onyx-hd', 'openai-nova-hd', 'openai-shimmer-hd', 'elevenlabs-voice-cloning', 'cartesia-voice-cloning']         
+ModelOptions = Literal['gpt-4o', 'gpt-4o-mini', 'gpt-4']
 
 metadata = sieve.Metadata(
     title="Youtube video to conversational podcast",
@@ -60,7 +61,7 @@ def video_to_commentary_podcast(
           name2: str = 'jane', 
           voice2: VoiceOptions = 'cartesia-australian-woman',
           max_summary_length: int = 10,
-          azure_model_name: str = 'gpt-4o'
+          azure_model_name: ModelOptions = 'gpt-4o'
     ) -> sieve.File:
 
     """
@@ -81,9 +82,10 @@ def video_to_commentary_podcast(
     azure_endpoint = get_azure_openai_endpoint(),
     azure_deployment = get_azure_deployment_name()
     )
-    
-    azure_call = AzureCall(client, azure_model_name)
 
+    azure_call = AzureCall(client, azure_model_name)
+    print("Selected Model", azure_model_name)
+    
     downloader = sieve.function.get("sieve/youtube_to_mp4")
     video_link = downloader.run(url)
 
@@ -116,7 +118,7 @@ def video_to_commentary_podcast(
     conversation_structured = azure_call.get_conversation_structured(conversation_unstructured)
     print(f"A conversation generated has been parsed to json that is of length {len(conversation_structured['dialogues'])}.")
     
-    #TODO : Referece Audio Not needed here.
+    
     tts_settings = {
         'reference_audio': sieve.File(url="https://storage.googleapis.com/sieve-prod-us-central1-public-file-upload-bucket/482b91af-e737-48ea-b76d-4bb22d77fb56/caa0664b-f530-4406-858a-99837eb4b354-input-reference_audio.wav"),
         'emotion': "normal",
