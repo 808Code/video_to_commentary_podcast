@@ -17,11 +17,11 @@ def get_azure_api_version():
         raise Exception("AZURE_API_VERSION environment variable not set")
     return AZURE_API_VERSION
 
-def get_azure_open_api_url():
-    AZURE_OPEN_API_URL = os.getenv("AZURE_OPEN_API_URL")
-    if AZURE_OPEN_API_URL is None or AZURE_OPEN_API_URL == "":
-        raise Exception("AZURE_OPEN_API_URL environment variable not set")
-    return AZURE_OPEN_API_URL
+def get_azure_openai_endpoint():
+    AZURE_OPENAI_ENDPOINT = os.getenv("AZURE_OPENAI_ENDPOINT")
+    if AZURE_OPENAI_ENDPOINT is None or AZURE_OPENAI_ENDPOINT == "":
+        raise Exception("AZURE_OPENAI_ENDPOINT environment variable not set")
+    return AZURE_OPENAI_ENDPOINT
 
 def get_azure_deployment_name():
     AZURE_DEPLOYMENT_NAME = os.getenv("AZURE_DEPLOYMENT_NAME")
@@ -48,7 +48,7 @@ metadata = sieve.Metadata(
     environment_variables=[
         sieve.Env(name="AZURE_OPENAI_API_KEY", description="AZURE_OPENAI_API_KEY is the API key of your deployed model"),
         sieve.Env(name="AZURE_API_VERSION", description="AZURE_API_VERSION of your deployed endpoint."),
-        sieve.Env(name="AZURE_OPEN_API_URL", description="AZURE_OPEN_API_URL is the endpoint of your deployed model."),
+        sieve.Env(name="AZURE_OPENAI_ENDPOINT", description="AZURE_OPENAI_ENDPOINT is the endpoint of your deployed model."),
         sieve.Env(name="AZURE_DEPLOYMENT_NAME", description="AZURE_DEPLOYMENT_NAME of your deployed model."),
     ],
     metadata=metadata
@@ -76,9 +76,9 @@ def video_to_commentary_podcast(
     :return: Generated audio file of the commentary podcast.
     """
     client = AzureOpenAI(
-    api_key= get_azure_openai_api_key(),
+    api_key = get_azure_openai_api_key(),
     api_version = get_azure_api_version(),
-    azure_endpoint= get_azure_open_api_url(),
+    azure_endpoint = get_azure_openai_endpoint(),
     azure_deployment = get_azure_deployment_name()
     )
     
